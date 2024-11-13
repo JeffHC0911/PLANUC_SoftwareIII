@@ -1,6 +1,6 @@
 // src/business/hooks/useForm.js
 import { useState } from 'react';
-import { validateRegisterForm } from '../validators/authValidators';  // Importar las validaciones
+import { validateRegisterForm} from '../validators';  // Importar las validaciones
 
 export const useForm = (initialValues = {}, onSubmit) => {
   const [values, setValues] = useState(initialValues);

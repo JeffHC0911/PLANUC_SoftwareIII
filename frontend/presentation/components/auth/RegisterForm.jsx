@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, Button } from 'react-native';
 import { CustomInput } from '../common/CustomInput';
-import { useForm } from '../../../business/hooks/useForm';
+import { useForm } from '../../../business/hooks';
 
 const RegisterForm = ({ onSubmit }) => {
   const { values, errors, handleChange, handleSubmit } = useForm(
