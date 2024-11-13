@@ -17,11 +17,7 @@ const userSchema = Schema({
     career: {
         type: String,
         required: true
-    },
-    semester: {
-        type: Number,
-        required: true
-    },
+    }
 
 });
 
