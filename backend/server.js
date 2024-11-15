@@ -21,7 +21,7 @@ app.use(express.json());
 //Rutas
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/schedule', require('./routes/schedule'));
-
+app.use('/api/studygroup', require('./routes/studygroup'));
 
 
 

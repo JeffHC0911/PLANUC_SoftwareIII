@@ -13,10 +13,9 @@ const studyGroupSchema = Schema({
         ref: 'User'
     }],
     schedule: {
-        day: {type: String,},
-        startTime: {type: Date,},
-        endTime: {type: Date,},
-        frequency: {type: String,},
+        day: {type: String},
+        startTime: {type: Date},
+        endTime: {type: Date}
     },
     status: {
         type: String,
