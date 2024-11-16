@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
+import { View, Text, TextInput, StyleSheet, Alert, Pressable } from 'react-native';
 import { BACKEND_URL } from '@env';
 
 const LoginScreen = ({ navigation, setIsAuthenticated }) => {
@@ -76,7 +76,9 @@ const LoginScreen = ({ navigation, setIsAuthenticated }) => {
         value={password}
         onChangeText={setPassword}
       />
-      <Button title="Ingresar" onPress={handleLogin} />
+      <Pressable style={styles.btn} onPress={handleLogin}>
+      <Text style={styles.txtBtn}>Ingresar</Text>
+      </Pressable>
       <Text
         style={styles.registerText}
         onPress={() => navigation.navigate('Register')}
@@ -113,6 +115,15 @@ const styles = StyleSheet.create({
     marginTop: 15,
     color: 'blue',
     textDecorationLine: 'underline',
+  },
+  btn: {
+    padding: 20,
+    backgroundColor: '#007bff',
+    borderRadius: 10,
+  },
+  txtBtn: {
+    color: '#fff',
+    fontWeight: 'bold',
   },
 });
 
