@@ -1,9 +1,10 @@
 import React from 'react';
 import { View, StyleSheet, Button } from 'react-native';
-import { CustomInput } from '../common/CustomInput';
+import CustomInput from '../common/CustomInput';
 import { useForm } from '../../../business/hooks';
 
 const RegisterForm = ({ onSubmit }) => {
+  // Usamos el hook de formulario y pasamos onSubmit
   const { values, errors, handleChange, handleSubmit } = useForm(
     {
       name: '',
@@ -11,9 +12,9 @@ const RegisterForm = ({ onSubmit }) => {
       password: '',
       repeatPassword: '',
       career: '',
-      semester: 0,
+      semester: '',
     },
-    onSubmit
+    onSubmit // Esto se ejecutará cuando se llame a handleSubmit
   );
 
   return (
@@ -55,16 +56,16 @@ const RegisterForm = ({ onSubmit }) => {
       />
       <CustomInput
         label="SEMESTRE:"
-        value={values.semester}
+        value={String(values.semester)} // Asegúrate de que sea un string para evitar errores en el input
         onChangeText={(text) => handleChange('semester', text)}
         keyboardType="numeric"
       />
 
-      {/* Aquí puedes agregar el botón de envío */}
-      <View style={styles.btn} >
-      <Button title="Crear Cuenta" onPress={handleSubmit} />
-      </View>    
+      {/* Botón de envío */}
+      <View style={styles.btn}>
+        <Button title="Crear Cuenta" onPress={handleSubmit} />
       </View>
+    </View>
   );
 };
 

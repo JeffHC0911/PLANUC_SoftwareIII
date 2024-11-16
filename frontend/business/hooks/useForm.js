@@ -1,6 +1,5 @@
-// src/business/hooks/useForm.js
 import { useState } from 'react';
-import { validateRegisterForm} from '../validators';  // Importar las validaciones
+import { validateRegisterForm } from '../validators';  // Importar las validaciones
 
 export const useForm = (initialValues = {}, onSubmit) => {
   const [values, setValues] = useState(initialValues);
@@ -17,16 +16,18 @@ export const useForm = (initialValues = {}, onSubmit) => {
   // Validar el formulario cuando se envía
   const validateForm = () => {
     const newErrors = validateRegisterForm(values);  // Usar la función de validación externa
-
     setErrors(newErrors);
-
     return Object.keys(newErrors).length === 0; // Devuelve true si no hay errores
   };
 
   // Manejador del envío del formulario
   const handleSubmit = () => {
     if (validateForm()) {
-      onSubmit(values);
+      if (typeof onSubmit === 'function') {
+        onSubmit(values);
+      } else {
+        console.warn("onSubmit no está definido o no es una función");
+      }
     }
   };
 

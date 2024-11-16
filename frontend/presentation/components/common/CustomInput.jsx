@@ -1,8 +1,7 @@
-
 import React from 'react';
 import { View, Text, TextInput, StyleSheet } from 'react-native';
 
-export const CustomInput = ({ label, error, ...props }) => {
+const CustomInput = ({ label, error, ...props }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.label}>{label}</Text>
@@ -43,3 +42,5 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
 });
+
+export default CustomInput;
