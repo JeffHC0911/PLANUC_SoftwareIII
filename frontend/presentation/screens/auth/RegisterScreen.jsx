@@ -2,32 +2,31 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import RegisterForm from '../../components/auth/RegisterForm';
-//import useAuthService from '../../../business/services/useAuthService';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 const RegisterScreen = () => {
   const navigation = useNavigation();
-  //const { register, loading } = useAuthService();
 
-/*   const handleRegister = async (userData) => {
+  const handleRegister = async (userData) => {
     try {
-      await register(userData);
-      navigation.navigate('Home');
+      // Aquí iría el código de registro (simulado aquí)
+      // await register(userData);
+      navigation.navigate('Home'); // Navega al menú principal después de registrarse
     } catch (error) {
-      // Manejar error
+      console.error("Error al registrar:", error);
     }
-  }; */
+  };
 
   return (
     <SafeAreaView>
-      <View style={styles.container} >
+      <View style={styles.container}>
         <Text style={styles.title}>Registro Usuario</Text>
         <View>
           <Image 
             //source={require('../../../assets/default-avatar.png')}
           />
         </View>
-        <RegisterForm />
+        <RegisterForm onSubmit={handleRegister} /> {/* Pasa handleRegister a RegisterForm */}
       </View>
     </SafeAreaView>
   );
@@ -47,7 +46,6 @@ const styles = StyleSheet.create({
     color: '#fff',
     borderRadius: 10,
   },
-
 });
 
 export default RegisterScreen;
