@@ -54,12 +54,6 @@ const RegisterForm = ({ onSubmit }) => {
         onChangeText={(text) => handleChange('career', text)}
         placeholder="Ejemplo: Geología"
       />
-      <CustomInput
-        label="SEMESTRE:"
-        value={String(values.semester)} // Asegúrate de que sea un string para evitar errores en el input
-        onChangeText={(text) => handleChange('semester', text)}
-        keyboardType="numeric"
-      />
 
       {/* Botón de envío */}
       <View style={styles.btn}>
