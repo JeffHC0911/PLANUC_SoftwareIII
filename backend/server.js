@@ -26,6 +26,6 @@ app.use('/api/studygroup', require('./routes/studygroup'));
 
 
 //Escuchar peticiones
-app.listen(process.env.PORT, () => {
+app.listen(process.env.PORT, '0.0.0.0', () => {
     console.log(`Servidor corriendo en puerto ${4000}`);
 });

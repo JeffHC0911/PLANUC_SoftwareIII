@@ -1,9 +1,12 @@
 import React from 'react';
-import { View, StyleSheet, Button } from 'react-native';
+import { View, StyleSheet, Button, Alert } from 'react-native';
 import CustomInput from '../common/CustomInput';
 import { useForm } from '../../../business/hooks';
+import { useNavigation } from '@react-navigation/native';
+import { BACKEND_URL } from '@env';
 
 const RegisterForm = ({ onSubmit }) => {
+  const navigation = useNavigation(); // Instancia de navegación
   // Usamos el hook de formulario y pasamos onSubmit
   const { values, errors, handleChange, handleSubmit } = useForm(
     {
@@ -16,6 +19,34 @@ const RegisterForm = ({ onSubmit }) => {
     },
     onSubmit // Esto se ejecutará cuando se llame a handleSubmit
   );
+
+  const handleRegister = async (formData) => {
+    try {
+      const response = await fetch(`${BACKEND_URL}/api/auth/new`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData), // Enviar los datos al backend
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        Alert.alert('Registro exitoso', 'Tu cuenta ha sido creada.', [
+          {
+            text: 'Aceptar',
+            onPress: () => navigation.navigate('Login'), // Redirigir al Login
+          },
+        ]);
+      } else {
+        Alert.alert('Error', data.error || 'Hubo un problema al registrar tu cuenta.');
+      }
+    } catch (error) {
+      console.error(error);
+      Alert.alert('Error', 'No se pudo conectar al servidor. Intenta nuevamente.');
+    }
+  };
 
   return (
     <View style={styles.form}>
@@ -54,16 +85,10 @@ const RegisterForm = ({ onSubmit }) => {
         onChangeText={(text) => handleChange('career', text)}
         placeholder="Ejemplo: Geología"
       />
-      <CustomInput
-        label="SEMESTRE:"
-        value={String(values.semester)} // Asegúrate de que sea un string para evitar errores en el input
-        onChangeText={(text) => handleChange('semester', text)}
-        keyboardType="numeric"
-      />
 
       {/* Botón de envío */}
       <View style={styles.btn}>
-        <Button title="Crear Cuenta" onPress={handleSubmit} />
+      <Button title="Crear Cuenta" onPress={() => handleRegister(values)} />
       </View>
     </View>
   );

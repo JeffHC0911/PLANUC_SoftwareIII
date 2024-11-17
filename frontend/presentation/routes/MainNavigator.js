@@ -1,15 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { createDrawerNavigator } from '@react-navigation/drawer';
+import { createStackNavigator } from '@react-navigation/stack';
 import RegisterScreen from '../screens/auth/RegisterScreen';
 import HomeScreen from '../screens/home/HomeScreen';
 import ProfileScreen from '../screens/profile/ProfileScreen';
 import CheckAvailabilityScreen from '../screens/checkAvailability/CheckAvailabilityScreen';
 import RegisterScheduleScreen from '../screens/registerSchedule/RegisterScheduleScreen';
 
+import  LoginScreen  from '../screens/auth/LoginScreen'
+
+
 
 const Drawer = createDrawerNavigator();
+const Stack = createStackNavigator();
 
-const MainNavigator = () => (
+const DrawerNavigator = () => (
   <Drawer.Navigator initialRouteName="Home">
     <Drawer.Screen 
       name="Home" 
@@ -20,11 +25,6 @@ const MainNavigator = () => (
       name="Profile" 
       component={ProfileScreen} 
       options={{ title: 'Perfil' }}
-    />
-    <Drawer.Screen 
-      name="Register" 
-      component={RegisterScreen} 
-      options={{ title: 'Registro' }}
     />
     <Drawer.Screen
       name="CheckAvailability"
@@ -38,5 +38,36 @@ const MainNavigator = () => (
     />
   </Drawer.Navigator>
 );
+
+const AuthNavigator = ({ setIsAuthenticated }) => (
+  <Stack.Navigator initialRouteName="Login">
+    <Stack.Screen
+      name="Register"
+      component={RegisterScreen}
+      options={{ title: 'Registro' }}
+    />
+    <Stack.Screen
+      name="Login"
+      options={{ headerShown: false }}
+    >
+      {(props) => <LoginScreen {...props} setIsAuthenticated={setIsAuthenticated} />}
+    </Stack.Screen>
+  </Stack.Navigator>
+);
+
+const MainNavigator = () => {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  return (
+    <>
+      {isAuthenticated ? (
+        <DrawerNavigator />
+      ) : (
+        <AuthNavigator setIsAuthenticated={setIsAuthenticated} />
+      )}
+    </>
+  );
+};
+
 
 export default MainNavigator;
