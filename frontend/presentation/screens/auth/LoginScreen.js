@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, Alert, Pressable } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { BACKEND_URL } from '@env';
+
 
 const LoginScreen = ({ navigation, setIsAuthenticated }) => {
   const [email, setEmail] = useState('');
@@ -28,16 +30,13 @@ const LoginScreen = ({ navigation, setIsAuthenticated }) => {
   
       const data = await response.json();
       console.log(data);
-      
   
       if (response.ok && data.ok) {
         // Login exitoso
         Alert.alert('Inicio de sesión exitoso', 'Bienvenido al sistema');
-        
-        // Guardar el token en el almacenamiento local o estado global
-        // Puedes usar AsyncStorage o algún estado global como Redux o Context API
-        // Ejemplo con AsyncStorage:
-        //await AsyncStorage.setItem('userToken', data.token);
+  
+        // Guardar el token en AsyncStorage
+        await AsyncStorage.setItem('token', data.token);  // Aquí guardamos el token
   
         // Actualizar el estado de autenticación
         setIsAuthenticated(true);
@@ -56,6 +55,7 @@ const LoginScreen = ({ navigation, setIsAuthenticated }) => {
       console.error(error);
     }
   };
+  
   
 
   return (

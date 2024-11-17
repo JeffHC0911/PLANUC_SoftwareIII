@@ -21,8 +21,8 @@ router.post(
     '/',
     [
         check('title','El titulo es obligatorio').not().isEmpty(),
-        check('startTime','Fecha de inicio es obligatoria').custom( isDate ),
-        check('endTime','Fecha de finalización es obligatoria').custom( isDate ),
+        //check('startTime','Fecha de inicio es obligatoria').custom( isDate ),
+        //check('endTime','Fecha de finalización es obligatoria').custom( isDate ),
         fieldValidators
     ],
     createSchedule 
