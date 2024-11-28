@@ -10,7 +10,9 @@ const app = express();
 dbConnection();
 
 // Middleware
-app.use(cors());
+app.use(cors({
+    origin: "*", // O especifica la IP si es necesario
+  }));
 app.use(express.static('public'));
 app.use(express.json());
 
