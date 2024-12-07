@@ -34,7 +34,7 @@ const DrawerNavigator = () => (
     <Drawer.Screen
       name="RegisterSchedule"
       component={RegisterScheduleScreen}
-      options={{ title: 'Registrar Materia' }}
+      options={{ title: 'Registrar Evento' }}
     />
   </Drawer.Navigator>
 );

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, Alert, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, StyleSheet, Alert, TouchableOpacity, Pic } from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { BACKEND_URL } from '@env';
+import { Picker } from '@react-native-picker/picker';
 
 const RegisterScheduleScreen = () => {
   const apiUrl = 'http://192.168.0.109:4000';
@@ -90,39 +90,51 @@ const RegisterScheduleScreen = () => {
       <Text style={styles.label}>Título*</Text>
       <TextInput
         style={styles.input}
-        placeholder="Ejemplo: Clase de Matemáticas"
+        placeholder="Nombre de la actividad"
         value={title}
         onChangeText={setTitle}
       />
 
-      <Text style={styles.label}>Tipo*</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Ejemplo: Clase, Reunión"
-        value={type}
-        onChangeText={setType}
-      />
+    <Text style={styles.label}>Tipo*</Text>
+    <View style={styles.pickerContainer}>
+      <Picker
+        selectedValue={type}
+        onValueChange={(itemValue) => setType(itemValue)}
+        style={styles.picker}
+      >
+        <Picker.Item label="Selecciona un tipo" value="" />
+        <Picker.Item label="Clase" value="Clase" />
+        <Picker.Item label="Actividad" value="Actividad" />
+        <Picker.Item label="Reunión" value="Reunión " />
+        <Picker.Item label="Otro" value="Otro" />
+      </Picker>
+    </View>
 
-      <Text style={styles.label}>Profesor</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Ejemplo: Prof. Juan Pérez"
-        value={professor}
-        onChangeText={setProfessor}
-      />
+    {/* Campo de profesor solo si el tipo es Clase */}
+    {type === 'Clase' && (
+      <>
+        <Text style={styles.label}>Profesor</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="Nombre del docente"
+          value={professor}
+          onChangeText={setProfessor}
+        />
+      </>
+    )}
 
-      <Text style={styles.label}>Aula</Text>
+      <Text style={styles.label}>Lugar</Text>
       <TextInput
         style={styles.input}
-        placeholder="Ejemplo: A101"
+        placeholder="Nombre del lugar"
         value={classroom}
         onChangeText={setClassroom}
       />
 
-      <Text style={styles.label}>Notas</Text>
+      <Text style={styles.label}>Notas (Recordatorio)</Text>
       <TextInput
         style={styles.input}
-        placeholder="Ejemplo: Llevar materiales"
+        placeholder="Descripción"
         value={notes}
         onChangeText={setNotes}
       />

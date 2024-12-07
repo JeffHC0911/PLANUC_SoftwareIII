@@ -1,20 +1,33 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Button, Modal, Text, FlatList, Alert } from 'react-native';
+import { View, StyleSheet, Text, FlatList, Alert, TouchableOpacity, Modal } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Calendar } from 'react-native-calendars';
 import { BACKEND_URL } from '@env';
 
+const EventCard = ({ event }) => (
+  <View style={styles.eventCard}>
+    <Text style={styles.eventTitle}>{event.title}</Text>
+    <Text style={styles.eventDetail}>Tipo: {event.type}</Text>
+    <Text style={styles.eventDetail}>
+      Hora de inicio: {new Date(event.startTime).toLocaleTimeString()}
+    </Text>
+    <Text style={styles.eventDetail}>
+      Hora de fin: {new Date(event.endTime).toLocaleTimeString()}
+    </Text>
+    <Text style={styles.eventDetail}>Detalles: {event.details?.notes || 'Sin notas'}</Text>
+  </View>
+);
+
 const HomeScreen = () => {
-  const apiUrl = 'http://192.168.0.109:4000'
+  const apiUrl = 'http://192.168.0.109:4000';
 
   const [markedDates, setMarkedDates] = useState({});
   const [allEvents, setAllEvents] = useState([]);
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedEvents, setSelectedEvents] = useState([]);
   const [isModalVisible, setModalVisible] = useState(false);
-  const [userId, setUserId] = useState(null); // Nuevo estado para almacenar el ID del usuario
+  const [userId, setUserId] = useState(null);
 
-  // Obtener el ID del usuario desde el token
   const getUserId = async () => {
     try {
       const token = await AsyncStorage.getItem('token');
@@ -24,9 +37,8 @@ const HomeScreen = () => {
       }
 
       const decodedToken = JSON.parse(atob(token.split('.')[1]));
-      const uid = decodedToken.uid;
-      setUserId(uid); // Guardar el ID del usuario en el estado
-      return uid;
+      setUserId(decodedToken.uid);
+      return decodedToken.uid;
     } catch (error) {
       console.error('Error al decodificar el token:', error);
       Alert.alert('Error', 'Error al obtener la información del usuario');
@@ -34,12 +46,11 @@ const HomeScreen = () => {
     }
   };
 
-  // Cargar los eventos desde el backend
   const fetchEvents = async () => {
     try {
       const token = await AsyncStorage.getItem('token');
       const currentUserId = await getUserId();
-      
+
       if (!token || !currentUserId) {
         Alert.alert('Error', 'No estás autenticado. Inicia sesión nuevamente.');
         return;
@@ -47,36 +58,20 @@ const HomeScreen = () => {
 
       const response = await fetch(`${apiUrl}/api/schedule/`, {
         method: 'GET',
-        headers: {
-          'x-token': token,
-        },
+        headers: { 'x-token': token },
       });
 
       const data = await response.json();
-      
-
       if (!data.ok || !Array.isArray(data.schedules)) {
         throw new Error('La respuesta del backend no contiene eventos válidos.');
       }
 
-      // Filtrar los eventos para mostrar solo los del usuario actual
-      const userEvents = data.schedules.filter(event => event.user._id === currentUserId);
-      console.log('Eventos del usuario:', userEvents);
-      
-      
-      
-
-      
-      
-      
-      
-      // Guardar solo los eventos del usuario actual
+      const userEvents = data.schedules.filter((event) => event.user._id === currentUserId);
       setAllEvents(userEvents);
 
-      // Marcar las fechas solo para los eventos del usuario actual
       const formattedEvents = userEvents.reduce((acc, event) => {
         const day = event.startTime.split('T')[0];
-        acc[day] = { marked: true, dotColor: 'blue' };
+        acc[day] = { marked: true, dotColor: '#007BFF' };
         return acc;
       }, {});
 
@@ -87,20 +82,16 @@ const HomeScreen = () => {
     }
   };
 
-  // Manejar la selección de un día en el calendario
   const handleDayPress = (day) => {
     const date = day.dateString;
     setSelectedDate(date);
-
-    // Filtrar eventos de esa fecha (solo para el usuario actual)
     const eventsOfTheDay = allEvents.filter(
-      event => event.startTime.startsWith(date) && event.user._id === userId
+      (event) => event.startTime.startsWith(date) && event.user._id === userId
     );
     setSelectedEvents(eventsOfTheDay);
     setModalVisible(true);
   };
 
-  // Efecto para cargar los eventos cuando se monta el componente
   useEffect(() => {
     fetchEvents();
   }, []);
@@ -110,33 +101,38 @@ const HomeScreen = () => {
       <Calendar
         markedDates={markedDates}
         onDayPress={handleDayPress}
+        theme={{
+          todayTextColor: '#007BFF',
+          selectedDayBackgroundColor: '#007BFF',
+          selectedDayTextColor: '#ffffff',
+        }}
       />
 
       <Modal
         visible={isModalVisible}
         animationType="slide"
+        transparent={true}
         onRequestClose={() => setModalVisible(false)}
       >
-        <View style={styles.modalContent}>
-          <Button title="Cerrar" onPress={() => setModalVisible(false)} />
-          <Text style={styles.modalTitle}>Eventos del {selectedDate}</Text>
-          {selectedEvents.length > 0 ? (
-            <FlatList
-              data={selectedEvents}
-              keyExtractor={(item) => item._id}
-              renderItem={({ item }) => (
-                <View style={styles.eventCard}>
-                  <Text style={styles.eventTitle}>{item.title}</Text>
-                  <Text>Tipo: {item.type}</Text>
-                  <Text>Hora de inicio: {new Date(item.startTime).toLocaleTimeString()}</Text>
-                  <Text>Hora de fin: {new Date(item.endTime).toLocaleTimeString()}</Text>
-                  <Text>Detalles: {item.details?.notes || 'Sin notas'}</Text>
-                </View>
-              )}
-            />
-          ) : (
-            <Text>No hay eventos para esta fecha.</Text>
-          )}
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContent}>
+            <TouchableOpacity
+              style={styles.closeButton}
+              onPress={() => setModalVisible(false)}
+            >
+              <Text style={styles.closeButtonText}>Cerrar</Text>
+            </TouchableOpacity>
+            <Text style={styles.modalTitle}>Eventos del {selectedDate}</Text>
+            {selectedEvents.length > 0 ? (
+              <FlatList
+                data={selectedEvents}
+                keyExtractor={(item) => item._id}
+                renderItem={({ item }) => <EventCard event={item} />}
+              />
+            ) : (
+              <Text style={styles.noEventsText}>No hay eventos para esta fecha.</Text>
+            )}
+          </View>
         </View>
       </Modal>
     </View>
@@ -146,29 +142,62 @@ const HomeScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f9f9f9',
+    backgroundColor: '#f4f4f4',
     padding: 10,
   },
-  modalContent: {
+  modalOverlay: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalContent: {
+    backgroundColor: '#ffffff',
+    borderRadius: 10,
     padding: 20,
+    width: '90%',
+    maxHeight: '80%',
   },
   modalTitle: {
     fontSize: 18,
     fontWeight: 'bold',
-    marginBottom: 10,
+    marginBottom: 15,
+    color: '#333',
+  },
+  closeButton: {
+    alignSelf: 'flex-end',
+    backgroundColor: '#007BFF',
+    padding: 10,
+    borderRadius: 5,
+  },
+  closeButtonText: {
+    color: '#fff',
+    fontWeight: 'bold',
   },
   eventCard: {
+    backgroundColor: '#f9f9f9',
     padding: 15,
-    borderWidth: 1,
-    borderColor: '#ddd',
-    borderRadius: 5,
+    borderRadius: 8,
     marginBottom: 10,
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    shadowOffset: { width: 0, height: 2 },
+    elevation: 2,
   },
   eventTitle: {
     fontSize: 16,
     fontWeight: 'bold',
+    color: '#333',
+  },
+  eventDetail: {
+    fontSize: 14,
+    color: '#666',
+  },
+  noEventsText: {
+    textAlign: 'center',
+    fontSize: 16,
+    color: '#888',
   },
 });
 
