@@ -1,66 +1,47 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, Alert, Pressable } from 'react-native';
+import { View, Text, TextInput, StyleSheet, Alert, Pressable, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { BACKEND_URL } from '@env';
-
 
 const LoginScreen = ({ navigation, setIsAuthenticated }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  const apiUrl = 'http://192.168.0.109:4000';
+
   const handleLogin = async () => {
-    // Validar que el email y la contraseña no estén vacíos
     if (!email || !password) {
       Alert.alert('Error', 'Por favor ingresa tu correo y contraseña');
       return;
     }
-  
+
     try {
-      // Realizar la solicitud POST al backend para autenticar
-      const response = await fetch(`${BACKEND_URL}/api/auth/`, {
+      const response = await fetch(`${apiUrl}/api/auth/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          email: email,
-          password: password,
-        }),
+        body: JSON.stringify({ email, password }),
       });
-  
+
       const data = await response.json();
-      console.log(data);
-  
       if (response.ok && data.ok) {
-        // Login exitoso
         Alert.alert('Inicio de sesión exitoso', 'Bienvenido al sistema');
-  
-        // Guardar el token en AsyncStorage
-        await AsyncStorage.setItem('token', data.token);  // Aquí guardamos el token
-  
-        // Actualizar el estado de autenticación
+        await AsyncStorage.setItem('token', data.token);
         setIsAuthenticated(true);
-  
-        // Navegar al Home
-        navigation.navigate('DrawerNavigator', {
-          screen: 'Home',
-        });
+        navigation.navigate('DrawerNavigator', { screen: 'Home' });
       } else {
-        // Error de login
         Alert.alert('Error', data.error || 'Correo o contraseña incorrectos');
       }
     } catch (error) {
-      // Manejo de errores en la solicitud
       Alert.alert('Error', 'No se pudo conectar con el servidor. Intenta nuevamente.');
       console.error(error);
     }
   };
-  
-  
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Iniciar Sesión</Text>
+      <Text style={styles.title}>Bienvenido a PLANUC</Text>
+      <Text style={styles.subtitle}>Inicia sesión para continuar</Text>
       <TextInput
         style={styles.input}
         placeholder="Correo electrónico"
@@ -76,15 +57,21 @@ const LoginScreen = ({ navigation, setIsAuthenticated }) => {
         value={password}
         onChangeText={setPassword}
       />
-      <Pressable style={styles.btn} onPress={handleLogin}>
-      <Text style={styles.txtBtn}>Ingresar</Text>
-      </Pressable>
-      <Text
-        style={styles.registerText}
-        onPress={() => navigation.navigate('Register')}
+      <Pressable
+        style={({ pressed }) => [
+          styles.btn,
+          { backgroundColor: pressed ? '#0056b3' : '#007bff' },
+        ]}
+        onPress={handleLogin}
       >
-        ¿No tienes una cuenta? Regístrate
-      </Text>
+        <Text style={styles.txtBtn}>Ingresar</Text>
+      </Pressable>
+      <TouchableOpacity onPress={() => navigation.navigate('Register')}>
+        <Text style={styles.registerText}>
+          ¿No tienes una cuenta?{' '}
+          <Text style={styles.registerLink}>Regístrate</Text>
+        </Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -95,35 +82,50 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: '#eef2f5',
   },
   title: {
-    fontSize: 24,
+    fontSize: 28,
     fontWeight: 'bold',
-    marginBottom: 20,
+    color: '#333',
+    marginBottom: 10,
+  },
+  subtitle: {
+    fontSize: 16,
+    color: '#666',
+    marginBottom: 30,
   },
   input: {
     width: '100%',
-    padding: 10,
+    padding: 15,
     borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 5,
+    borderColor: '#ddd',
+    borderRadius: 8,
     marginBottom: 15,
     backgroundColor: '#fff',
-  },
-  registerText: {
-    marginTop: 15,
-    color: 'blue',
-    textDecorationLine: 'underline',
+    fontSize: 16,
+    color: '#333',
   },
   btn: {
-    padding: 20,
-    backgroundColor: '#007bff',
-    borderRadius: 10,
+    paddingVertical: 15,
+    paddingHorizontal: 80,
+    borderRadius: 8,
+    marginTop: 10,
   },
   txtBtn: {
     color: '#fff',
-    fontWeight: 'bold',
+    fontWeight: '600',
+    fontSize: 16,
+    textAlign: 'center',
+  },
+  registerText: {
+    marginTop: 20,
+    color: '#666',
+    fontSize: 14,
+  },
+  registerLink: {
+    color: '#007bff',
+    textDecorationLine: 'underline',
   },
 });
 

@@ -6,6 +6,8 @@ import { BACKEND_URL } from '@env';
 
 
 const RegisterScheduleScreen = () => {
+  const apiUrl = 'http://192.168.0.109:4000'
+
   const [title, setTitle] = useState('');
   const [type, setType] = useState('');
   const [professor, setProfessor] = useState('');
@@ -57,7 +59,7 @@ const RegisterScheduleScreen = () => {
         return;
       }
   
-      const response = await fetch(`${BACKEND_URL}/api/schedule/`, {
+      const response = await fetch(`${apiUrl}/api/schedule/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

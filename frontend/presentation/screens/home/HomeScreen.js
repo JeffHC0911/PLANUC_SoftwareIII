@@ -5,6 +5,8 @@ import { Calendar } from 'react-native-calendars';
 import { BACKEND_URL } from '@env';
 
 const HomeScreen = () => {
+  const apiUrl = 'http://192.168.0.109:4000'
+
   const [markedDates, setMarkedDates] = useState({});
   const [allEvents, setAllEvents] = useState([]);
   const [selectedDate, setSelectedDate] = useState(null);
@@ -43,7 +45,7 @@ const HomeScreen = () => {
         return;
       }
 
-      const response = await fetch(`${BACKEND_URL}/api/schedule/`, {
+      const response = await fetch(`${apiUrl}/api/schedule/`, {
         method: 'GET',
         headers: {
           'x-token': token,

@@ -1,50 +1,43 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import React from 'react';
+import { View, Text, StyleSheet, SafeAreaView } from 'react-native';
 import RegisterForm from '../../components/auth/RegisterForm';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
 const RegisterScreen = () => {
-  const navigation = useNavigation();
-
   const handleRegister = async (userData) => {
     try {
-      // Aquí iría el código de registro (simulado aquí)
-      // await register(userData);
-      navigation.navigate('Home'); // Navega al menú principal después de registrarse
+      navigation.navigate('Home');
     } catch (error) {
-      console.error("Error al registrar:", error);
+      console.error('Error al registrar:', error);
     }
   };
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={styles.safeContainer}>
       <View style={styles.container}>
-        <Text style={styles.title}>Registro Usuario</Text>
-        <View>
-          <Image 
-            //source={require('../../../assets/default-avatar.png')}
-          />
-        </View>
-        <RegisterForm onSubmit={handleRegister} /> {/* Pasa handleRegister a RegisterForm */}
+        <RegisterForm onSubmit={handleRegister} />
       </View>
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
+  safeContainer: {
+    flex: 1,
+    backgroundColor: '#f5f5f5',
+  },
   container: {
+    flex: 1,
     padding: 20,
-    backgroundColor: '#fff',
-  },  
+  },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
     textAlign: 'center',
-    backgroundColor: '#007bff',
-    padding: 10,
     color: '#fff',
+    backgroundColor: '#007bff',
+    paddingVertical: 10,
     borderRadius: 10,
+    marginBottom: 20,
   },
 });
 

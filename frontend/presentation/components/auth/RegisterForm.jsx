@@ -1,13 +1,12 @@
 import React from 'react';
-import { View, StyleSheet, Button, Alert } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Text, Alert } from 'react-native';
 import CustomInput from '../common/CustomInput';
 import { useForm } from '../../../business/hooks';
 import { useNavigation } from '@react-navigation/native';
-import { BACKEND_URL } from '@env';
 
 const RegisterForm = ({ onSubmit }) => {
-  const navigation = useNavigation(); // Instancia de navegación
-  // Usamos el hook de formulario y pasamos onSubmit
+  const apiUrl = 'http://192.168.0.109:4000';
+  const navigation = useNavigation();
   const { values, errors, handleChange, handleSubmit } = useForm(
     {
       name: '',
@@ -15,29 +14,23 @@ const RegisterForm = ({ onSubmit }) => {
       password: '',
       repeatPassword: '',
       career: '',
-      semester: '',
     },
-    onSubmit // Esto se ejecutará cuando se llame a handleSubmit
+    onSubmit
   );
 
   const handleRegister = async (formData) => {
     try {
-      const response = await fetch(`${BACKEND_URL}/api/auth/new`, {
+      const response = await fetch(`${apiUrl}/api/auth/new`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData), // Enviar los datos al backend
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
       });
 
       const data = await response.json();
 
       if (response.ok) {
         Alert.alert('Registro exitoso', 'Tu cuenta ha sido creada.', [
-          {
-            text: 'Aceptar',
-            onPress: () => navigation.navigate('Login'), // Redirigir al Login
-          },
+          { text: 'Aceptar', onPress: () => navigation.navigate('Login') },
         ]);
       } else {
         Alert.alert('Error', data.error || 'Hubo un problema al registrar tu cuenta.');
@@ -51,45 +44,43 @@ const RegisterForm = ({ onSubmit }) => {
   return (
     <View style={styles.form}>
       <CustomInput
-        label="NOMBRE:"
+        label="Nombre:"
         value={values.name}
         onChangeText={(text) => handleChange('name', text)}
         error={errors.name}
         placeholder="Ejemplo: Juan Pérez"
       />
       <CustomInput
-        label="EMAIL"
+        label="Email:"
         value={values.email}
         onChangeText={(text) => handleChange('email', text)}
         error={errors.email}
         keyboardType="email-address"
-        placeholder="Ejemplo: pepitoperez@gmail.com"
+        placeholder="Ejemplo: usuario@gmail.com"
       />
       <CustomInput
-        label="CONTRASEÑA"
+        label="Contraseña:"
         value={values.password}
         onChangeText={(text) => handleChange('password', text)}
         error={errors.password}
         secureTextEntry
       />
       <CustomInput
-        label="REPETIR CONTRASEÑA"
+        label="Repetir Contraseña:"
         value={values.repeatPassword}
         onChangeText={(text) => handleChange('repeatPassword', text)}
         error={errors.repeatPassword}
         secureTextEntry
       />
       <CustomInput
-        label="CARRERA:"
+        label="Carrera:"
         value={values.career}
         onChangeText={(text) => handleChange('career', text)}
-        placeholder="Ejemplo: Geología"
+        placeholder="Ejemplo: Ingeniería en Sistemas"
       />
-
-      {/* Botón de envío */}
-      <View style={styles.btn}>
-      <Button title="Crear Cuenta" onPress={() => handleRegister(values)} />
-      </View>
+      <TouchableOpacity style={styles.btn} onPress={() => handleRegister(values)}>
+        <Text style={styles.btnText}>Crear Cuenta</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -97,11 +88,20 @@ const RegisterForm = ({ onSubmit }) => {
 const styles = StyleSheet.create({
   form: {
     padding: 20,
-    backgroundColor: '#fff',
+    backgroundColor: '#f5f5f5',
+    borderRadius: 10,
   },
   btn: {
     marginTop: 20,
     backgroundColor: '#007bff',
+    padding: 15,
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  btnText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });
 
