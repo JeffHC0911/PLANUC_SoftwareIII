@@ -23,14 +23,19 @@ const RegisterScheduleScreen = () => {
   const hideEndPicker = () => setEndPickerVisibility(false);
 
   const handleStartConfirm = (date) => {
-    setStartTime(date.toISOString());
+    // Convertir a UTC
+    const utcDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
+    setStartTime(utcDate.toISOString());
     hideStartPicker();
   };
-
+  
   const handleEndConfirm = (date) => {
-    setEndTime(date.toISOString());
+    // Convertir a UTC
+    const utcDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
+    setEndTime(utcDate.toISOString());
     hideEndPicker();
   };
+  
 
   const handleSubmit = async () => {
     if (!title || !type) {
@@ -147,7 +152,7 @@ const RegisterScheduleScreen = () => {
         onConfirm={handleStartConfirm}
         onCancel={hideStartPicker}
       />
-      {startTime && <Text style={styles.dateText}>Inicio: {new Date(startTime).toLocaleString()}</Text>}
+      {startTime && <Text style={styles.dateText}>Inicio: {new Date(startTime).toLocaleString('es-CO', { timeZone: 'America/Bogota' })}</Text>}
 
       <Text style={styles.label}>Hora de Fin</Text>
       <CustomButton title="Seleccionar Hora de Fin" onPress={showEndPicker} />
@@ -157,7 +162,7 @@ const RegisterScheduleScreen = () => {
         onConfirm={handleEndConfirm}
         onCancel={hideEndPicker}
       />
-      {endTime && <Text style={styles.dateText}>Fin: {new Date(endTime).toLocaleString()}</Text>}
+      {endTime && <Text style={styles.dateText}>Fin: {new Date(endTime).toLocaleString('es-CO', { timeZone: 'America/Bogota' })}</Text>}
 
       <CustomButton title="Registrar Evento" onPress={handleSubmit} />
     </View>
