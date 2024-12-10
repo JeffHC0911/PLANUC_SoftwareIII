@@ -2,18 +2,19 @@ import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Text, FlatList, Alert, TouchableOpacity, Modal } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Calendar } from 'react-native-calendars';
-import { BACKEND_URL } from '@env';
+import { useFocusEffect } from '@react-navigation/native'; // Importar useFocusEffect
 
 const EventCard = ({ event }) => (
   <View style={styles.eventCard}>
     <Text style={styles.eventTitle}>{event.title}</Text>
     <Text style={styles.eventDetail}>Tipo: {event.type}</Text>
     <Text style={styles.eventDetail}>
-      Hora de inicio: {new Date(event.startTime).toLocaleTimeString()}
-    </Text>
-    <Text style={styles.eventDetail}>
-      Hora de fin: {new Date(event.endTime).toLocaleTimeString()}
-    </Text>
+    Hora de inicio: {new Date(event.startTime).toLocaleTimeString('es-CO', { timeZone: 'America/Bogota' })}
+   </Text>
+  <Text style={styles.eventDetail}>
+    Hora de fin: {new Date(event.endTime).toLocaleTimeString('es-CO', { timeZone: 'America/Bogota' })}
+  </Text>
+
     <Text style={styles.eventDetail}>Detalles: {event.details?.notes || 'Sin notas'}</Text>
   </View>
 );
@@ -28,6 +29,7 @@ const HomeScreen = () => {
   const [isModalVisible, setModalVisible] = useState(false);
   const [userId, setUserId] = useState(null);
 
+  // Obtener el ID del usuario
   const getUserId = async () => {
     try {
       const token = await AsyncStorage.getItem('token');
@@ -46,6 +48,7 @@ const HomeScreen = () => {
     }
   };
 
+  // Función para obtener los eventos
   const fetchEvents = async () => {
     try {
       const token = await AsyncStorage.getItem('token');
@@ -82,6 +85,7 @@ const HomeScreen = () => {
     }
   };
 
+  // Manejar la selección de una fecha en el calendario
   const handleDayPress = (day) => {
     const date = day.dateString;
     setSelectedDate(date);
@@ -92,9 +96,12 @@ const HomeScreen = () => {
     setModalVisible(true);
   };
 
-  useEffect(() => {
-    fetchEvents();
-  }, []);
+  // Usar useFocusEffect para recargar los eventos cada vez que se enfoque la pantalla
+  useFocusEffect(
+    React.useCallback(() => {
+      fetchEvents(); // Recargar eventos al enfocarse en la pantalla
+    }, [])
+  );
 
   return (
     <View style={styles.container}>
