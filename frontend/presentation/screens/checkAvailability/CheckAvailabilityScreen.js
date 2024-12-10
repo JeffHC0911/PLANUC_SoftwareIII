@@ -56,13 +56,13 @@ const CheckAvailabilityScreen = () => {
       const data = await response.json();
       console.log('Datos:', data);
 
-      if (data.length === 0) {
-        setNoResults(true); // Indicar que no hay eventos
-        setSuccessMessage(''); // Limpiar mensaje de éxito
+      if (data.available == false) {
+        setNoResults(true);
+        setSuccessMessage('El usuario NO está disponible');
       } else {
-        setNoResults(false); // Hay eventos disponibles
+        setNoResults(false);
         setAvailability(data);
-        setSuccessMessage('El usuario está disponible.'); // Mensaje de éxito
+        setSuccessMessage('El usuario está disponible.');
       }
     } catch (error) {
       console.error(error);
@@ -128,7 +128,7 @@ const CheckAvailabilityScreen = () => {
       )}
 
       {noResults && (
-        <Text style={styles.noResultsText}>No hay eventos disponibles.</Text>
+        <Text style={styles.noResultsText}>{successMessage}</Text>
       )}
 
       {!noResults && availability.length > 0 && (
