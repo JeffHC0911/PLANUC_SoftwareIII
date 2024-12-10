@@ -1,44 +1,72 @@
-import React from 'react';
-import { View, Text, TextInput, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import { View, TextInput, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import Icon from 'react-native-vector-icons/Feather'; // Asegúrate de tener instalado react-native-vector-icons
 
-const CustomInput = ({ label, error, ...props }) => {
+const CustomInput = ({ label, value, onChangeText, error, placeholder, secureTextEntry, ...props }) => {
+  const [showPassword, setShowPassword] = useState(false);
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.label}>{label}</Text>
-      <TextInput
-        style={[styles.input, error && styles.inputError]}
-        placeholderTextColor="#999"
-        {...props}
-      />
+    <View style={styles.inputContainer}>
+      {label && <Text style={styles.label}>{label}</Text>}
+      <View style={styles.inputWrapper}>
+        <TextInput
+          {...props}
+          style={[styles.input, error && styles.errorInput]}
+          value={value}
+          onChangeText={onChangeText}
+          placeholder={placeholder}
+          secureTextEntry={secureTextEntry && !showPassword} // Muestra/oculta la contraseña según el estado
+        />
+        {secureTextEntry && (
+          <TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={styles.eyeIconContainer}>
+            <Icon 
+              name={showPassword ? 'eye-off' : 'eye'}  // Cambia el ícono entre ojo y ojo cerrado
+              size={24}
+              color="#666"
+            />
+          </TouchableOpacity>
+        )}
+      </View>
       {error && <Text style={styles.errorText}>{error}</Text>}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
+  inputContainer: {
     marginBottom: 15,
   },
   label: {
-    fontSize: 14,
-    color: '#666',
+    fontSize: 16,
+    color: '#333',
     marginBottom: 5,
   },
+  inputWrapper: {
+    position: 'relative', // Necesario para posicionar el ícono dentro del campo
+  },
   input: {
-    height: 45,
+    width: '100%',
+    padding: 15,
     borderWidth: 1,
     borderColor: '#ddd',
     borderRadius: 8,
-    paddingHorizontal: 15,
+    backgroundColor: '#fff',
     fontSize: 16,
     color: '#333',
+    paddingRight: 40, // Deja espacio para el ícono
   },
-  inputError: {
-    borderColor: '#ff4444',
+  errorInput: {
+    borderColor: 'red',
+  },
+  eyeIconContainer: {
+    position: 'absolute',
+    right: 10,
+    top: '50%',
+    transform: [{ translateY: -12 }], // Centra el ícono verticalmente
   },
   errorText: {
-    color: '#ff4444',
     fontSize: 12,
+    color: 'red',
     marginTop: 5,
   },
 });

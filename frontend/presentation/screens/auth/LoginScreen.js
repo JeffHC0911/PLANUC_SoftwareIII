@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, Alert, Pressable, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Icon from 'react-native-vector-icons/Feather'; // Importa el ícono de ojo
 
 const LoginScreen = ({ navigation, setIsAuthenticated }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false); // Estado para mostrar/ocultar la contraseña
 
   const apiUrl = 'http://192.168.0.109:4000';
 
@@ -50,13 +52,22 @@ const LoginScreen = ({ navigation, setIsAuthenticated }) => {
         onChangeText={setEmail}
         autoCapitalize="none"
       />
-      <TextInput
-        style={styles.input}
-        placeholder="Contraseña"
-        secureTextEntry
-        value={password}
-        onChangeText={setPassword}
-      />
+      <View style={styles.passwordContainer}>
+        <TextInput
+          style={styles.passwordInput}
+          placeholder="Contraseña"
+          secureTextEntry={!showPassword} // Muestra u oculta la contraseña según el estado
+          value={password}
+          onChangeText={setPassword}
+        />
+        <TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={styles.eyeIconContainer}>
+          <Icon 
+            name={showPassword ? 'eye-off' : 'eye'}  // Cambia el ícono entre ojo y ojo cerrado
+            size={24}
+            color="#666"
+          />
+        </TouchableOpacity>
+      </View>
       <Pressable
         style={({ pressed }) => [
           styles.btn,
@@ -105,6 +116,28 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     fontSize: 16,
     color: '#333',
+  },
+  passwordContainer: {
+    width: '100%',
+    position: 'relative',  // Para posicionar el ícono en el campo de texto
+  },
+  passwordInput: {
+    width: '100%',
+    padding: 15,
+    borderWidth: 1,
+    borderColor: '#ddd',
+    borderRadius: 8,
+    marginBottom: 15,
+    backgroundColor: '#fff',
+    fontSize: 16,
+    color: '#333',
+    paddingRight: 40,  // Asegúrate de dejar espacio a la derecha para el ícono
+  },
+  eyeIconContainer: {
+    position: 'absolute',
+    right: 15,
+    top: '50%',
+    transform: [{ translateY: -12 }], // Centra el ícono verticalmente
   },
   btn: {
     paddingVertical: 15,

@@ -56,7 +56,7 @@ const RegisterForm = ({ onSubmit }) => {
         onChangeText={(text) => handleChange('email', text)}
         error={errors.email}
         keyboardType="email-address"
-        placeholder="Ejemplo: usuario@gmail.com"
+        placeholder="Ejemplo: usuario@ucaldas.edu.co"
       />
       <CustomInput
         label="Contraseña:"
@@ -64,6 +64,7 @@ const RegisterForm = ({ onSubmit }) => {
         onChangeText={(text) => handleChange('password', text)}
         error={errors.password}
         secureTextEntry
+        placeholder="Tu contraseña"
       />
       <CustomInput
         label="Repetir Contraseña:"
@@ -71,12 +72,13 @@ const RegisterForm = ({ onSubmit }) => {
         onChangeText={(text) => handleChange('repeatPassword', text)}
         error={errors.repeatPassword}
         secureTextEntry
+        placeholder="Vuelve a escribir tu contraseña"
       />
       <CustomInput
         label="Carrera:"
         value={values.career}
         onChangeText={(text) => handleChange('career', text)}
-        placeholder="Ejemplo: Ingeniería en Sistemas"
+        placeholder="Ejemplo: Ingeniería de Sistemas"
       />
       <TouchableOpacity style={styles.btn} onPress={() => handleRegister(values)}>
         <Text style={styles.btnText}>Crear Cuenta</Text>
