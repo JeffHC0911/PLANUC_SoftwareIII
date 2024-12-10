@@ -6,6 +6,7 @@ import HomeScreen from '../screens/home/HomeScreen';
 import ProfileScreen from '../screens/profile/ProfileScreen';
 import CheckAvailabilityScreen from '../screens/checkAvailability/CheckAvailabilityScreen';
 import RegisterScheduleScreen from '../screens/registerSchedule/RegisterScheduleScreen';
+import RegisterStudyGroupScreen from '../screens/createGroupStudy/RegisterStudyGroupScreen';
 
 import  LoginScreen  from '../screens/auth/LoginScreen'
 
@@ -35,6 +36,11 @@ const DrawerNavigator = () => (
       name="RegisterSchedule"
       component={RegisterScheduleScreen}
       options={{ title: 'Registrar Evento' }}
+    />
+    <Drawer.Screen
+      name="RegisterStudyGroup"
+      component={RegisterStudyGroupScreen}
+      options={{ title: 'Crea Grupo de Estudio' }}
     />
   </Drawer.Navigator>
 );
