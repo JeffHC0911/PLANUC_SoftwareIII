@@ -9,6 +9,7 @@ import RegisterScheduleScreen from '../screens/registerSchedule/RegisterSchedule
 import RegisterStudyGroupScreen from '../screens/createGroupStudy/RegisterStudyGroupScreen';
 import StudyGroupsScreen from '../screens/createGroupStudy/StudyGroupScreen';
 import  LoginScreen  from '../screens/auth/LoginScreen'
+import RegisterRecurringScheduleScreen from '../screens/registerSchedule/RegisterRecurringScheduleScreen';
 
 
 
@@ -36,6 +37,11 @@ const DrawerNavigator = () => (
       name="RegisterSchedule"
       component={RegisterScheduleScreen}
       options={{ title: 'Registrar Evento' }}
+    />
+    <Drawer.Screen
+      name="RegisterRecurringSchedule"
+      component={RegisterRecurringScheduleScreen}
+      options={{ title: 'Registrar Evento Recurrente' }}
     />
     <Drawer.Screen
       name="RegisterStudyGroup"
