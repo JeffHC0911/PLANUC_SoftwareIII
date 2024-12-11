@@ -5,7 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Picker } from '@react-native-picker/picker';
 
 const RegisterScheduleScreen = () => {
-  const apiUrl = 'http://192.168.0.109:4000';
+  const apiUrl = 'http://192.168.196.186:4000';
 
   const [title, setTitle] = useState('');
   const [type, setType] = useState('');

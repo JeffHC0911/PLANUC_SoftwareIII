@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { validateRegisterForm } from '../validators';  // Importar las validaciones
 
-export const useForm = (initialValues = {}, onSubmit) => {
+export const useForm = (onSubmit, initialValues = {}) => {
   const [values, setValues] = useState(initialValues);
   const [errors, setErrors] = useState({});
 

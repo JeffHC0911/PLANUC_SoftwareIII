@@ -5,7 +5,7 @@ import { useForm } from '../../../business/hooks';
 import { useNavigation } from '@react-navigation/native';
 
 const RegisterForm = ({ onSubmit }) => {
-  const apiUrl = 'http://192.168.0.109:4000';
+  const apiUrl = 'http://192.168.196.186:4000';
   const navigation = useNavigation();
   const { values, errors, handleChange, handleSubmit } = useForm(
     {

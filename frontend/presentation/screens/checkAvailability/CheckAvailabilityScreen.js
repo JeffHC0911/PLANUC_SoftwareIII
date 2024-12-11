@@ -4,7 +4,7 @@ import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const CheckAvailabilityScreen = () => {
-  const apiUrl = 'http://192.168.0.109:4000';
+  const apiUrl = 'http://192.168.196.186:4000';
 
   const [email, setEmail] = useState('');
   const [startDate, setStartDate] = useState(null);

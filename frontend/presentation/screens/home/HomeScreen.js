@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Text, FlatList, Alert, TouchableOpacity, Modal } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Calendar } from 'react-native-calendars';
-import { useFocusEffect } from '@react-navigation/native'; // Importar useFocusEffect
+import { useFocusEffect } from '@react-navigation/native';
 
 const EventCard = ({ event }) => (
   <View style={styles.eventCard}>
@@ -20,7 +20,7 @@ const EventCard = ({ event }) => (
 );
 
 const HomeScreen = () => {
-  const apiUrl = 'http://192.168.0.109:4000';
+  const apiUrl = 'http://192.168.196.186:4000';
 
   const [markedDates, setMarkedDates] = useState({});
   const [allEvents, setAllEvents] = useState([]);

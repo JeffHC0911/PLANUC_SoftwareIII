@@ -7,7 +7,7 @@ import ProfileScreen from '../screens/profile/ProfileScreen';
 import CheckAvailabilityScreen from '../screens/checkAvailability/CheckAvailabilityScreen';
 import RegisterScheduleScreen from '../screens/registerSchedule/RegisterScheduleScreen';
 import RegisterStudyGroupScreen from '../screens/createGroupStudy/RegisterStudyGroupScreen';
-
+import StudyGroupsScreen from '../screens/createGroupStudy/StudyGroupScreen';
 import  LoginScreen  from '../screens/auth/LoginScreen'
 
 
@@ -41,6 +41,11 @@ const DrawerNavigator = () => (
       name="RegisterStudyGroup"
       component={RegisterStudyGroupScreen}
       options={{ title: 'Crea Grupo de Estudio' }}
+    />
+    <Drawer.Screen
+      name="StudyGroupsScreen"
+      component={StudyGroupsScreen}
+      options={{ title: 'Ver grupos de estudio' }}
     />
   </Drawer.Navigator>
 );

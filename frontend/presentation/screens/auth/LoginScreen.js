@@ -8,7 +8,7 @@ const LoginScreen = ({ navigation, setIsAuthenticated }) => {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false); // Estado para mostrar/ocultar la contraseña
 
-  const apiUrl = 'http://192.168.0.109:4000';
+  const apiUrl = 'http://192.168.196.186:4000';
 
   const handleLogin = async () => {
     if (!email || !password) {

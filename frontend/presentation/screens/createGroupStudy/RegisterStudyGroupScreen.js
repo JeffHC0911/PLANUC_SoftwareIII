@@ -5,15 +5,15 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Picker } from '@react-native-picker/picker';
 
 const RegisterStudyGroupScreen = () => {
-  const apiUrl = 'http://192.168.0.109:4000';
+  const apiUrl = 'http://192.168.196.186:4000';
 
   const [name, setName] = useState('');
   const [subject, setSubject] = useState('');
   const [members, setMembers] = useState('');
-  //const [day, setDay] = useState('');
   const [startTime, setStartTime] = useState(null);
   const [endTime, setEndTime] = useState(null);
   const [description, setDescription] = useState('');
+  const [meetLink, setMeetLink] = useState(''); // Enlace de Google Meet
   const [isStartPickerVisible, setStartPickerVisibility] = useState(false);
   const [isEndPickerVisible, setEndPickerVisibility] = useState(false);
 
@@ -49,6 +49,7 @@ const RegisterStudyGroupScreen = () => {
         endTime: endTime || null,
       },
       description: description || null,
+      meetLink: meetLink || null, // Incluir el enlace de Google Meet
     };
 
     try {
@@ -120,7 +121,6 @@ const RegisterStudyGroupScreen = () => {
         onConfirm={handleStartConfirm}
         onCancel={hideStartPicker}
       />
-      {startTime && <Text style={styles.dateText}>Inicio: {new Date(startTime).toLocaleString('es-CO', { timeZone: 'America/Bogota' })}</Text>}
 
       <Text style={styles.label}>Hora de Fin*</Text>
       <CustomButton title="Seleccionar Hora de Fin" onPress={showEndPicker} />
@@ -130,7 +130,6 @@ const RegisterStudyGroupScreen = () => {
         onConfirm={handleEndConfirm}
         onCancel={hideEndPicker}
       />
-      {endTime && <Text style={styles.dateText}>Fin: {new Date(endTime).toLocaleString('es-CO', { timeZone: 'America/Bogota' })}</Text>}
 
       <Text style={styles.label}>Descripción (Opcional)</Text>
       <TextInput
@@ -138,6 +137,14 @@ const RegisterStudyGroupScreen = () => {
         placeholder="Descripción del grupo de estudio"
         value={description}
         onChangeText={setDescription}
+      />
+
+      <Text style={styles.label}>Enlace de Google Meet (Opcional)</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Ej. https://meet.google.com/xyz-abcd-efg"
+        value={meetLink}
+        onChangeText={setMeetLink}
       />
 
       <CustomButton title="Registrar Grupo" onPress={handleSubmit} />
