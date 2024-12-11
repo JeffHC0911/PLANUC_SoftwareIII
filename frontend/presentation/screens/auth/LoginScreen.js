@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, Alert, Pressable, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, StyleSheet, Alert, Pressable, TouchableOpacity, Image } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import Icon from 'react-native-vector-icons/Feather'; // Importa el ícono de ojo
+import Icon from 'react-native-vector-icons/Feather';
 
 const LoginScreen = ({ navigation, setIsAuthenticated }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false); // Estado para mostrar/ocultar la contraseña
+  const [showPassword, setShowPassword] = useState(false);
 
   const apiUrl = 'http://192.168.196.186:4000';
 
@@ -42,6 +42,11 @@ const LoginScreen = ({ navigation, setIsAuthenticated }) => {
 
   return (
     <View style={styles.container}>
+      <Image
+        source={require('../../../assets/logo.png')}
+        style={styles.logo}
+        resizeMode="contain"
+      />
       <Text style={styles.title}>Bienvenido a PLANUC</Text>
       <Text style={styles.subtitle}>Inicia sesión para continuar</Text>
       <TextInput
@@ -56,13 +61,13 @@ const LoginScreen = ({ navigation, setIsAuthenticated }) => {
         <TextInput
           style={styles.passwordInput}
           placeholder="Contraseña"
-          secureTextEntry={!showPassword} // Muestra u oculta la contraseña según el estado
+          secureTextEntry={!showPassword}
           value={password}
           onChangeText={setPassword}
         />
         <TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={styles.eyeIconContainer}>
           <Icon 
-            name={showPassword ? 'eye-off' : 'eye'}  // Cambia el ícono entre ojo y ojo cerrado
+            name={showPassword ? 'eye-off' : 'eye'}
             size={24}
             color="#666"
           />
@@ -95,6 +100,11 @@ const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: '#eef2f5',
   },
+  logo: {
+    width: 120,
+    height: 120,
+    marginBottom: 20,
+  },
   title: {
     fontSize: 28,
     fontWeight: 'bold',
@@ -119,7 +129,7 @@ const styles = StyleSheet.create({
   },
   passwordContainer: {
     width: '100%',
-    position: 'relative',  // Para posicionar el ícono en el campo de texto
+    position: 'relative',
   },
   passwordInput: {
     width: '100%',
@@ -131,13 +141,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     fontSize: 16,
     color: '#333',
-    paddingRight: 40,  // Asegúrate de dejar espacio a la derecha para el ícono
+    paddingRight: 40,
   },
   eyeIconContainer: {
     position: 'absolute',
     right: 15,
     top: '50%',
-    transform: [{ translateY: -12 }], // Centra el ícono verticalmente
+    transform: [{ translateY: -12 }],
   },
   btn: {
     paddingVertical: 15,
