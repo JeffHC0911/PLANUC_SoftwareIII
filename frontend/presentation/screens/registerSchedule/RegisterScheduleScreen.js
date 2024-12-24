@@ -4,8 +4,9 @@ import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Picker } from '@react-native-picker/picker';
 
+import CONFIG from '../../../config';
+
 const RegisterScheduleScreen = () => {
-  const apiUrl = 'http://192.168.196.186:4000';
 
   const [title, setTitle] = useState('');
   const [type, setType] = useState('');
@@ -62,7 +63,7 @@ const RegisterScheduleScreen = () => {
         return;
       }
 
-      const response = await fetch(`${apiUrl}/api/schedule/`, {
+      const response = await fetch(`${CONFIG.API_URL}/api/schedule/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

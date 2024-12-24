@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, Alert, TouchableOpacity, StyleSheet, Linking } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+import CONFIG from '../../../config';
+
 const StudyGroupsScreen = () => {
   const [studyGroups, setStudyGroups] = useState([]);
   const [loading, setLoading] = useState(true);
-
-  const apiUrl = 'http://192.168.196.186:4000';
 
   const getUserId = async () => {
     try {
@@ -32,7 +32,7 @@ const StudyGroupsScreen = () => {
   
       if (!token || !currentUserId) return;
   
-      const response = await fetch(`${apiUrl}/api/studygroup/`, {
+      const response = await fetch(`${CONFIG.API_URL}/api/studygroup/`, {
         method: 'GET',
         headers: { 'x-token': token },
       });

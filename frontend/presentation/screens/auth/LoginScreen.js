@@ -3,12 +3,13 @@ import { View, Text, TextInput, StyleSheet, Alert, Pressable, TouchableOpacity, 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Icon from 'react-native-vector-icons/Feather';
 
+import CONFIG from '../../../config';
+
 const LoginScreen = ({ navigation, setIsAuthenticated }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
 
-  const apiUrl = 'http://192.168.196.186:4000';
 
   const handleLogin = async () => {
     if (!email || !password) {
@@ -17,7 +18,7 @@ const LoginScreen = ({ navigation, setIsAuthenticated }) => {
     }
 
     try {
-      const response = await fetch(`${apiUrl}/api/auth/`, {
+      const response = await fetch(`${CONFIG.API_URL}/api/auth/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

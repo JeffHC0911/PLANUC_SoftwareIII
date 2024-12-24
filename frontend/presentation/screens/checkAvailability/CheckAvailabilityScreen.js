@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, FlatList, Modal, Alert } from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import CONFIG from '../../../config';
 
 const CheckAvailabilityScreen = () => {
-  const apiUrl = 'http://192.168.196.186:4000';
 
   const [email, setEmail] = useState('');
   const [startDate, setStartDate] = useState(null);
@@ -44,7 +44,7 @@ const CheckAvailabilityScreen = () => {
         return;
       }
 
-      const url = `${apiUrl}/api/availability?email=${encodeURIComponent(email)}&startRange=${encodeURIComponent(new Date(startDate).toISOString())}&endRange=${encodeURIComponent(new Date(endDate).toISOString())}`;
+      const url = `${CONFIG.API_URL}/api/availability?email=${encodeURIComponent(email)}&startRange=${encodeURIComponent(new Date(startDate).toISOString())}&endRange=${encodeURIComponent(new Date(endDate).toISOString())}`;
 
       const response = await fetch(url, {
         method: 'GET',
