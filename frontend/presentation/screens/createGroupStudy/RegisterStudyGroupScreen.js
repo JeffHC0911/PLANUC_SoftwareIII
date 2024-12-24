@@ -3,9 +3,9 @@ import { View, Text, TextInput, StyleSheet, Alert, TouchableOpacity } from 'reac
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Picker } from '@react-native-picker/picker';
+import CONFIG from '../../../config';
 
 const RegisterStudyGroupScreen = () => {
-  const apiUrl = 'http://192.168.196.186:4000';
 
   const [name, setName] = useState('');
   const [subject, setSubject] = useState('');
@@ -59,7 +59,7 @@ const RegisterStudyGroupScreen = () => {
         return;
       }
 
-      const response = await fetch(`${apiUrl}/api/studygroup/`, {
+      const response = await fetch(`${CONFIG.API_URL}/api/studygroup/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -4,6 +4,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Calendar } from 'react-native-calendars';
 import { useFocusEffect } from '@react-navigation/native';
 
+import CONFIG from '../../../config';
+
 const EventCard = ({ event }) => (
   <View style={styles.eventCard}>
     <Text style={styles.eventTitle}>{event.title}</Text>
@@ -20,7 +22,6 @@ const EventCard = ({ event }) => (
 );
 
 const HomeScreen = () => {
-  const apiUrl = 'http://192.168.196.186:4000';
 
   const [markedDates, setMarkedDates] = useState({});
   const [allEvents, setAllEvents] = useState([]);
@@ -59,7 +60,7 @@ const HomeScreen = () => {
         return;
       }
 
-      const response = await fetch(`${apiUrl}/api/schedule/`, {
+      const response = await fetch(`${CONFIG.API_URL}/api/schedule/`, {
         method: 'GET',
         headers: { 'x-token': token },
       });

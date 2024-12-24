@@ -3,8 +3,9 @@ import { View, Text, TouchableOpacity, StyleSheet, Alert, TextInput } from 'reac
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+import CONFIG from '../../../config';
+
 const RegisterRecurringScheduleScreen = () => {
-  const apiUrl = 'http://192.168.196.186:4000';
 
   const [title, setTitle] = useState('');
   const [startTime, setStartTime] = useState(null);
@@ -53,7 +54,7 @@ const RegisterRecurringScheduleScreen = () => {
         return;
       }
 
-      const response = await fetch(`${apiUrl}/api/schedule/`, {
+      const response = await fetch(`${CONFIG.API_URL}/api/schedule/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -4,8 +4,11 @@ import CustomInput from '../common/CustomInput';
 import { useForm } from '../../../business/hooks';
 import { useNavigation } from '@react-navigation/native';
 
+import CONFIG from '../../../config';
+
+
 const RegisterForm = ({ onSubmit }) => {
-  const apiUrl = 'http://192.168.196.186:4000';
+
   const navigation = useNavigation();
   const { values, errors, handleChange, handleSubmit } = useForm(
     {
@@ -20,7 +23,7 @@ const RegisterForm = ({ onSubmit }) => {
 
   const handleRegister = async (formData) => {
     try {
-      const response = await fetch(`${apiUrl}/api/auth/new`, {
+      const response = await fetch(`${CONFIG.API_URL}/api/auth/new`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
